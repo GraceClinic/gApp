@@ -395,19 +395,6 @@ abstract class Common_Abstracts_Model
     }
 
     /**
-     * Typically a user cannot simply find any record he/she desires.  Session variables determine if the user should
-     * have access to the retrieved record.  For example, if request is to find id=20, upon return if it is discovered
-     * that record id = 20 belongs to user id = 5 and the session variable shows the current user id = 98, then this
-     * is an obvious malicious attempt to obtain records that do not belong to the user.
-     *
-     * @return  bool        - returns true if validation is successful
-     */
-//    protected function _validateModel(){
-//        // return false to insure that the developer always creates an appropriate find validation
-//        return false;
-//    }
-
-    /**
      * Specific model logic that follows find function.  Override as required, otherwise ignore.
      *
      * @protected
