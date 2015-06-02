@@ -410,7 +410,7 @@ abstract class Common_Abstracts_Model
     /**
      * Specific model logic that follows find function.  Override as required, otherwise ignore.
      *
-     * @public
+     * @protected
      * @return      boolean     - flags successful execution
      */
     protected function _postFind()
