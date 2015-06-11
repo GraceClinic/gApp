@@ -504,7 +504,8 @@
                 url: self._rootURL,
                 method: "POST",
                 data: {
-                    model:  _getPostProps(self),
+                    //model:  _getPostProps(self),
+                    model:  self.toJSON(true),
                     method: method,
                     args:   args
                 }
