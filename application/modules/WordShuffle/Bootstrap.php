@@ -9,7 +9,9 @@ class WordShuffle_Bootstrap extends Zend_Application_Module_Bootstrap
         // It is necessary to manually add all of the new components as they are created in the application architecture
         $nameSpaceToPath = array(
 //            Example of Game package contained under module
-            'Model_Game'    => 'models/Game'
+            'Model_Game'    => 'models/Game',
+            'Model_Players'    => 'models/Players',
+             'Model_Instructions'    => 'models/Instructions'
         );
 
         $autoLoaderResource = $this->getResourceLoader();

@@ -2,7 +2,7 @@
 /**
  * @class WordShuffle_Instructions
  *
- * @property   
+ * @property
  */
 class WordShuffle_InstructionsController extends Common_Abstracts_RestController
 {
