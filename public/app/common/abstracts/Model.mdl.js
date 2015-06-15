@@ -89,6 +89,8 @@
             function setDOM(value){
                 _DOM = value;
             }
+            
+            // TODO: Move properties on prototype here and make configurable:false
 
             /************************
              * CONSTRUCTOR LOGIC
@@ -167,7 +169,7 @@
         function getSysMan(){
             return SysMan;
         }
-        function setSysMan(data){
+        function setSysMan(){
             var _msg = 'Set of Model.SysMan not allowed!';
             SysMan.Logger.entry(_msg,self.constructor.name,SysMan.Logger.TYPE.ERROR,SysMan.Logger.ERRNO.MODEL_ERROR);
             //SysMan.setFromArray(data);
@@ -849,26 +851,6 @@
          */
         function _ucFirst(x){
             return x.charAt(0).toUpperCase() + x.slice(1);
-        }
-        /**
-         * Returns model properties for posting to backend
-         *
-         * @function    _getPostProps
-         * @private
-         * @param   {App_Common_Abstracts_Model}    self    - reference to calling model
-         * @returns {object}
-         */
-        function _getPostProps(self){
-            var _postProps = {};
-
-            for(var i=0; i<self.properties.length; i++){
-                var _isIncluded = _excludeFromPost[self.uid].indexOf(self.properties[i]) < 0;
-                if(_isIncluded){
-                    _postProps[self.properties[i]] = self[self.properties[i]];
-                }
-            }
-
-            return _postProps;
         }
 
         function _processArray(arr,scrubExcludes){
