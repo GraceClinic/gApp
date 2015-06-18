@@ -1,7 +1,7 @@
 /**
  * wordshuffleDirectivesInstructionsSlideShow Class
  *
- * Continuously revolves through array of content as dictated by dwell time
+ * Continuously revolves through array of Page objects as dictated by dwell time
  *
  **/
 
@@ -26,5 +26,6 @@
  * This directive binds to the DOM element and accepts "pages" and "dwell" as attributes of the element.  The "pages"
  * attribute will become the directive's "pages" property.  The "dwell" attribute will become the directive's "dwell"
  * property. Both are defined in the PROPERTIES section, and data passed therein must comply with those specifications.
+ * Any event listeners created within this element must be properly terminated when the element is destroyed.  
  * 
  **/
