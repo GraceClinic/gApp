@@ -22,17 +22,6 @@
  **/
 
 /**
- * CONSTANTS
- */
-/**
- * @constant    <ALL_CAPS_NAME>        value: <Value>
- * <Description>
- *
- * @type    {<type>}
- * @public
- **/
-
-/**
  * PUBLIC PROPERTIES
  **/
 /**

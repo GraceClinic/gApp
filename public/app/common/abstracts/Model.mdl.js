@@ -397,6 +397,9 @@
                         self.SysMan.Logger.entry('END ' + self.constructor.name + '._postFind()','App_Common_Abstracts_Model');
                         self.status = self.READY;
                         self.SysMan.Logger.entry('END ' + self.constructor.name + '.find() response process','App_Common_Abstracts_Model');
+
+                        // return the response to support daisy chaining usage as required
+                        return response;
                     },
                     function() {
                         self.status = self.POST_DISPATCH;
@@ -465,6 +468,9 @@
                         self.SysMan.Logger.entry('END ' + self.constructor.name + '._postSave()','App_Common_Abstracts_Model');
                         self.status = self.READY;
                         self.SysMan.Logger.entry('END ' + self.constructor.name + '.save() response process','App_Common_Abstracts_Model');
+
+                        // return the response to support daisy chaining usage as required
+                        return response;
                     },
                     function() {
                         // error processed by App Interceptor
@@ -571,6 +577,8 @@
                             'App_Common_Abstracts_Model'
                         );
 
+                        // return the response to support daisy chaining usage as required
+                        return response;
                     },
                     function() {
                         // error processed by App Interceptor
@@ -631,6 +639,9 @@
                         self.SysMan.Logger.entry('END ' + self.constructor.name + '._postRemove()','App_Common_Abstracts_Model');
                         self.status = self.READY;
                         self.SysMan.Logger.entry('END ' + self.constructor.name + '.remove() post dispatch','App_Common_Abstracts_Model');
+
+                        // return the response to support daisy chaining usage as required
+                        return response;
                     },
                     function() {
                         self.status = self.POST_DISPATCH;
