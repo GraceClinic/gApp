@@ -258,6 +258,7 @@ class WordShuffle_Model_Player extends Common_Abstracts_Model
    // Function Meant for Login Purposes
    public function login()
    {
+       /*In the login function, model is set and sent back and result array is empty and wont set anything...*/
 
        $this->_preLogin();
        /*  Model is already setup...now  check its signInState */
