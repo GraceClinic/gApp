@@ -14,7 +14,6 @@
  * @property    Common_Abstracts_DbTable    dbTable         Default table object storing model information
  *
  */
-
 abstract class Common_Abstracts_Mapper
 {
     private     $_dbTable;
@@ -25,38 +24,29 @@ abstract class Common_Abstracts_Mapper
         $_map = [],
         $_model,
         $_findAllBy = [];
-
-        // todo:  need to add _orderBy for default sorting of findAll
-
+    // todo:  need to add _orderBy for default sorting of findAll
     public function __construct(Common_Abstracts_Model &$model)
     {
         $this->_className = get_class($this);
-
         if(!($model instanceof Common_Abstracts_Model)){
             throw new Exception('Instantiation of mapper class '.$this->_className.' did not pass associated model object to constructor.');
         }else{
             $this->_model = $model;
         }
-
 //        $this->_model->SysMan->Logger->info($this->_className.'->construct()');
-
         $classArray = explode('_',$this->_className);
         // pop the model name from the class full name
         $modelName = array_pop($classArray);
         // pop the 'Mapper' string from the array
         array_pop($classArray);
-
         // Set dbTableName per default naming convention
         // This is only a default, models do not require a direct one-to-one relationship to a table, in fact it is likely not common
         $this->_dbTableName = implode('_',$classArray).'_DbTable_'.$modelName;
         $this->setDbTable($this->_dbTableName);
         // set the database adapter also at this time to avoid dependencies
         $this->_db = $this->getDbTable()->getAdapter();
-
         $this->init();
-
     }
-
     /**
      * Shell init() method called by abstract constructor.  Intent is to run additional code after construction, without
      * overriding the constructor.  The specific mapper needs only define an init() function.
@@ -64,7 +54,6 @@ abstract class Common_Abstracts_Mapper
      */
     protected function init(){
     }
-
     /**
      * Returns an instance of the database table adapter.
      *
@@ -75,10 +64,8 @@ abstract class Common_Abstracts_Mapper
         if(null === $this->_dbTable){
             $this->setDbTable($this->_dbTableName);
         }
-
         return $this->_dbTable;
     }
-
     public function setDbTable($dbTable)
     {
         if (is_string($dbTable)) {
@@ -90,7 +77,6 @@ abstract class Common_Abstracts_Mapper
         $this->_dbTable = $dbTable;
         return $this;
     }
-
     public function find($id = null)
     {
         if($id == null){
@@ -103,8 +89,10 @@ abstract class Common_Abstracts_Mapper
             }
         }
         $this->_model->SysMan->Logger->info($this->_className.'->find() where id = '.$id);
-
         $rowSet = $this->getDbTable()->find($id);
+
+        $this->_model->SysMan->Logger->info("So the rowset of find operation is  "."{{".PHP_EOL.print_r($rowSet,true).PHP_EOL."}}");
+
 
         $count = count($rowSet);
         // There should only be one record or no record
@@ -121,10 +109,8 @@ abstract class Common_Abstracts_Mapper
         }else{
             throw new Exception('Find for '.$this->_className.' resulted in multiple records.  This is not expected.');
         }
-
         return $success;
     }
-
     /**
      * Generic findAll implementation for a simple query based on foreign keys grouping the records within the target
      * table.  This function returns an array of associative arrays representing the model in lieu of returning an
@@ -140,7 +126,6 @@ abstract class Common_Abstracts_Mapper
     {
         $addAnd = false;
         $where = '';
-
         if($by == null) {
             // set findAll criteria to default _findAllBy if not defined
             $by = $this->_findAllBy;
@@ -156,12 +141,10 @@ abstract class Common_Abstracts_Mapper
                 }
             }
         }
-
         $result   = array();
         if(count($by)>0){
             // first element is the order by
             $order = $by[0];
-
             // find all records based on foreign keys identified in _findAllBy
             foreach ($by as $fk) {
                 $property = $this->_map[$fk];
@@ -180,15 +163,20 @@ abstract class Common_Abstracts_Mapper
                     $addAnd = true;
                 }
             }
-
             $resultSet = $this->getDbTable()->fetchAll($where,$order);
 
-            // transform row set to an array of associative arrays representing the model
-            foreach ($resultSet as $row) {
-                $mappedRow = $this->mapModel($this->_map,$row->toArray());
-                $result[] = $mappedRow;
-            }
+           $this->_model->SysMan->Logger->info("check out man".PHP_EOL."{{{".print_r($this->getDbTable()->info(),true).")))");
 
+            // transform row set to an array of associative arrays representing the model
+            $is=0;
+            foreach ($resultSet as $row) {
+                //$this->_model->SysMan->Logger->info("The  "."st Row is ".PHP_EOL."{{{".print_r($row->toArray())."}}}");
+                $a=$row->toArray();
+                $mappedRow = $this->mapModel($this->_map,$row->toArray());
+
+                $result[] = $mappedRow;
+                $this->_model->SysMan->Logger->info("The  "."st new Row is ".PHP_EOL."{{{".print_r($a,true)."}}}");
+            }
         }else{
             $this->_model->SysMan->Logger->info(
                 $this->_className.'->findAll() called with no criteria supplied in argument nor a default'.
@@ -196,10 +184,9 @@ abstract class Common_Abstracts_Mapper
             );
 //            throw new Exception($this->_className.'->findAll() called with no criteria supplied in argument nor a default '.
         }
-
+        $this->_model->SysMan->Logger->info("  The Page please array  ".PHP_EOL."{{{".PHP_EOL.print_r($result,true)."}}}");
         return $result;
     }
-
     /**
      * This assumes mapper saves to associated table resulting from getDbTable().  If mapper needs to save to multiple dbTables,
      * use the _preSave() method to parse model into separate tables with the saveToTable() method.
@@ -217,58 +204,70 @@ abstract class Common_Abstracts_Mapper
         $map = $this->_map;
         // The id property is the primary key for accessing database records
         $pk = $this->_model->id;
-
         $data = $this->mapModel($map);
-
         $this->_model->SysMan->Logger->info('START '.$this->_className.'->save() given table data = '.print_r($data,true),'Common_Abstracts_Mapper');
-
         $this->_model->SysMan->Logger->info('START '.$this->_className.'->_preSave()','Common_Abstracts_Mapper');
         $this->_preSave();
         $this->_model->SysMan->Logger->info('END '.$this->_className.'->_preSave()','Common_Abstracts_Mapper');
-
         // remove primary key field for insert and update operations (for insert it insures return of $pk, for update modifying primary key not allowed
+
+        $this->_model->SysMan->Logger->info("before removing id array is ".PHP_EOL."{{{".print_r($data,true)."}}}");
         if(isset($data[$targetTable->getPrimary()])){
             unset($data[$targetTable->getPrimary()]);
         }
 
-        try {
+
+
+        $this->_model->SysMan->Logger->info("After removing id array is ".PHP_EOL."{{{".print_r($data,true)."}}}");
+        try
+        {
             if (!is_null($pk) && $pk > 0) {
                 // if id property set, then this save operation is an update
                 $key = $targetTable->getPrimary();
                 if(!is_array($key)){
                     $where[$key.' = ?'] = $pk;
                     $targetTable->update($data, $where);
-                }else{
+                }
+
+                //An extra elseif is added in case if find all method is used
+                // the primary key will be set as an array with index 1 holding the primary key
+                elseif(is_array($key)&&(count($key)==1)&&(key($key)==1))
+                {
+                    $this->_model->SysMan->Logger->info(" I am in the changed Abstract");
+
+                    $key = $key['1'];
+
+                    $where[$key.' = ?'] = $pk;
+                    $targetTable->update($data, $where);
+
+                }
+                else{
                     throw new Exception('Table '.$targetTable->getName().' has more than one primary key.  The '.
-                    $this->_className.'.save() method only accounts for one.  You will need to update the abstract or override.');
+                        $this->_className.'.save() method only accounts for one.  You will need to update the abstract or override.');
                 }
             } else {
-//                $pkArray = $targetTable->getPrimary();
-//                for($i=0;$i<=count($pkArray);$i++){
-//                    if(isset($data[$pkArray[$i]])){
-//                        unset($data[$pkArray[$i]]);
-//                    }
-//                }
-
-                // Otherwise, the data is new and should be entered into a new database table row.
+                     //                $pkArray = $targetTable->getPrimary();
+                    //                for($i=0;$i<=count($pkArray);$i++){
+                    //                    if(isset($data[$pkArray[$i]])){
+                    //                        unset($data[$pkArray[$i]]);
+                    //                    }
+                   //                }
+                  // Otherwise, the data is new and should be entered into a new database table row.
                 $pk = $targetTable->insert($data);
                 // set the model's id to primary key for usage is postSave methods as required
                 $this->_model->id = $pk;
             }
         }
-        catch (Exception $e) {
+        catch (Exception $e)
+        {
             throw new Exception('Exception thrown during '.$this->_className.'->save() method:  '.$e->getMessage());
         }
-
         $this->_model->SysMan->Logger->info('START '.$this->_className.'->_postSave()','Common_Abstracts_Mapper');
         $this->_postSave();
         $this->_model->SysMan->Logger->info('END '.$this->_className.'->_postSave()','Common_Abstracts_Mapper');
-
         $this->_model->SysMan->Logger->info('END '.$this->_className.'->save() complete, primary key returned = '.$pk,'Common_Abstracts_Mapper');
-
         return $pk;
     }
-
     public function delete(){
         // TODO: define delete logic
         return true;
@@ -288,7 +287,6 @@ abstract class Common_Abstracts_Mapper
     public function saveToTable(Common_Abstracts_DbTable $targetTable, array $map, $pk)
     {
         $data = $this->mapModel($map);
-
         try {
             if (!is_null($pk) && $pk > 0) {
                 // if id property set, then this save operation is an update
@@ -306,14 +304,25 @@ abstract class Common_Abstracts_Mapper
         catch (Exception $e) {
             throw new Exception('Exception thrown during '.$this->_className.'->save() method:  '.$e->getMessage());
         }
-
         return $pk;
     }
+
+    /**
+     *Does Some Authentication Job
+     * @public
+     * @param string $credential
+     * @return boolean
+     * @throws Exception
+     */
+    public function authenticateUser($credential)
+    {
+
+    }
+
 
     protected function _swapForField($prop){
         return array_search($prop,$this->_map);
     }
-
     /**
      * Shell method supporting Mapper->save() functionality.  Specific Mapper class can override this method in order
      * to specify logic prior to inserting new data into or updating existing data within the DbTable.
@@ -323,7 +332,6 @@ abstract class Common_Abstracts_Mapper
     {
         // Create logic that precedes saving of data into the database.
     }
-
     /**
      * Shell method supporting Mapper->save() functionality.  Specific Mapper class can override this method in order
      * to specify logic following insertion of new data into or updating existing data within the DbTable.
@@ -333,7 +341,6 @@ abstract class Common_Abstracts_Mapper
     {
         // Create logic that precedes saving of data into the database.
     }
-
     /**
      * Translate model properties to the table field names based on state of $map variable.  Expectation is the $tableData
      * format is <table field name> => <model property>.  Only the mapped fields within this map will be saved to the
@@ -348,10 +355,8 @@ abstract class Common_Abstracts_Mapper
      */
     protected function mapModel($map,$tableData = null){
         $ret = [];
-
         // when data array not included, intent is to build the array from model properties for save to DB table
         $setModel = !is_null($tableData);
-
         foreach($map as $field=>$prop){
             // the class property array as created by the abstract constructor applies initial capital to each property
             if (in_array($prop,$this->_model->properties) || in_array(ucfirst($prop),$this->_model->properties)){
@@ -382,9 +387,21 @@ abstract class Common_Abstracts_Mapper
                 }
             }
         }
-
         return $ret;
     }
+
+    /**
+     *Does Some Authentication Job
+     * @public
+     * @param array $paramArray
+     * @return array
+     */
+    public function setChallenges($paramArray)
+    {
+
+    }
+
+
 
     /**
      * Allows model to execute 'quoteInto' DB function for criteria based searches, without need to instantiate the DB adapter.
@@ -406,5 +423,17 @@ abstract class Common_Abstracts_Mapper
         return $this->_db->quoteInto($criteria,$value,$dataType);
     }
 
+/* checking whether the comment has been uploaded or not*/
 
+    /**
+     * Gets a challenge Question
+     *
+     * @public
+     * @param   array $paramArray
+     * @return array
+     */
+    public function getChallengeQuestion($paramArray)
+    {
+
+    }
 }
