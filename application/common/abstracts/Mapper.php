@@ -229,6 +229,7 @@ abstract class Common_Abstracts_Mapper
                     $targetTable->update($data, $where);
                 }
 
+                /*  Its the else if part added */
                 //An extra elseif is added in case if find all method is used
                 // the primary key will be set as an array with index 1 holding the primary key
                 elseif(is_array($key)&&(count($key)==1)&&(key($key)==1))
