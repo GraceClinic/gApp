@@ -423,7 +423,7 @@ abstract class Common_Abstracts_Mapper
         return $this->_db->quoteInto($criteria,$value,$dataType);
     }
 
-/* checking whether the comment has been uploaded or not*/
+
 
     /**
      * Gets a challenge Question
