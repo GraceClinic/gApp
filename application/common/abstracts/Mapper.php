@@ -249,6 +249,7 @@ abstract class Common_Abstracts_Mapper
                     $where[$key.' = ?'] = $pk;
                     $targetTable->update($data, $where);
                 }
+
                 else{
                     throw new Exception('Table '.$targetTable->getName().' has more than one primary key.  The '.
                     $this->_className.'.save() method only accounts for one.  You will need to update the abstract or override.');
