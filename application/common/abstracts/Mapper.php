@@ -26,7 +26,7 @@ abstract class Common_Abstracts_Mapper
         $_model,
         $_findAllBy = [];
 
-        // todo:  need to add _orderBy for default sorting of findAll
+    // todo:  need to add _orderBy for default sorting of findAll
 
     public function __construct(Common_Abstracts_Model &$model)
     {
@@ -238,7 +238,18 @@ abstract class Common_Abstracts_Mapper
                 if(!is_array($key)){
                     $where[$key.' = ?'] = $pk;
                     $targetTable->update($data, $where);
-                }else{
+                }
+
+                //An extra elseif is added in case if findAll() method is used which will run _setupPrimaryKey()
+                // method of the Zend_Db_Table_Abstract which will set the primary key as an array with
+                // index 1 holding the primary key ...
+                elseif(is_array($key)&&(count($key)==1)&&(key($key)==1))
+                {
+                    $key = $key['1'];
+                    $where[$key.' = ?'] = $pk;
+                    $targetTable->update($data, $where);
+                }
+                else{
                     throw new Exception('Table '.$targetTable->getName().' has more than one primary key.  The '.
                     $this->_className.'.save() method only accounts for one.  You will need to update the abstract or override.');
                 }
