@@ -140,7 +140,10 @@ class WordShuffle_Model_Player extends Common_Abstracts_Model
     protected function setChallenges(){
         throw new Exception(" Try to set the challenge Questions ");
     }
+
+    // get challenges setter gets all the challenges from the challenge table...
     protected function getChallenges(){
+
 
         // It uses the mapper setChallenges method to get all the challenges
         $challengesArray = $this->Mapper->setChallenges();
@@ -166,6 +169,7 @@ class WordShuffle_Model_Player extends Common_Abstracts_Model
 
         return $this->_challenges;
     }
+    // end of challenges setter
 
     private $_idChallenge = null;
     protected function setIdChallenge($value){
