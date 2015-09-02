@@ -226,7 +226,7 @@
  *
  * 1) If ANONYMOUS_PLAY and Player.name is new but not set to "defaultName", set signInState as NAME_PENDING
  * 2) If NAME_PENDING and name is "defaultName", set signInState as ANONYMOUS_PLAY
- * 3) If NEW_SIGN_IN ot SECRET_PENDING and Player.name is new but not set to "defaultName", set signInState to
+ * 3) If NEW_SIGN_IN or SECRET_PENDING and Player.name is new but not set to "defaultName", set signInState to
  * NAME_PENDING.
  * 4) If SIGNED_IN, player can do as he likes, backend will determine if new name is already taken.
  * 5) Otherwise, set to ANONYMOUS_PLAY.
