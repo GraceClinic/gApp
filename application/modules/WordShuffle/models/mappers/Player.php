@@ -84,7 +84,7 @@ class WordShuffle_Model_Mapper_Player extends Common_Abstracts_Mapper
 
     }
 
-
+     // updated setChallenges which will get all challenges from the challenge table ...
     public function setChallenges()
     {
 
@@ -102,7 +102,7 @@ class WordShuffle_Model_Mapper_Player extends Common_Abstracts_Mapper
         return $challengesArray;
     }
 
-
+   // updated getChallengeQuestion logic ...
    public function getChallengeQuestion()
     {
 
@@ -123,6 +123,8 @@ class WordShuffle_Model_Mapper_Player extends Common_Abstracts_Mapper
         return $challengeQuestion;
 
     }
+
+    // end
 
 
 
