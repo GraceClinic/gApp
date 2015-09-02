@@ -125,7 +125,7 @@ class WordShuffle_Model_Player extends Common_Abstracts_Model
         return $this->_signInState;
     }
 
-    // Default Name property can't be set...
+    // Default Name property can't be set.....
     private $_defaultName = null;
     protected function setDefaultName(){
         throw new Exception(" Try to set the Default Name ");
