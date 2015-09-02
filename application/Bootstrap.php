@@ -1,5 +1,5 @@
 <?php
-
+error_reporting(0);
 require_once('common/models/SysMan.php');
 require_once('common/models/Session.php');
 
@@ -83,10 +83,6 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     {
         $this->bootstrap('session');
 
-        // Zend_Session::setOptions(array('strict'=>true));
-
-        // If you want all requests to have and use sessions, then place this function call early and
-        // unconditionally in your bootstrap code.
         Zend_Session::start();
 
         if(Zend_Session::sessionExists()){
