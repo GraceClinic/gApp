@@ -239,6 +239,15 @@ abstract class Common_Abstracts_Mapper
                     $where[$key.' = ?'] = $pk;
                     $targetTable->update($data, $where);
                 }
+                //An extra elseif is added in case if findAll() method is used which will run _setupPrimaryKey()
+                // method of the Zend_Db_Table_Abstract which will set the primary key as an array with
+                // index 1 holding the primary key ...
+                elseif(is_array($key)&&(count($key)==1)&&(key($key)==1))
+                {
+                    $key = $key['1'];
+                    $where[$key.' = ?'] = $pk;
+                    $targetTable->update($data, $where);
+                }
 
                 else{
                     throw new Exception('Table '.$targetTable->getName().' has more than one primary key.  The '.
