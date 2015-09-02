@@ -239,6 +239,7 @@ abstract class Common_Abstracts_Mapper
                     $where[$key.' = ?'] = $pk;
                     $targetTable->update($data, $where);
                 }
+
                 //An extra elseif is added in case if findAll() method is used which will run _setupPrimaryKey()
                 // method of the Zend_Db_Table_Abstract which will set the primary key as an array with
                 // index 1 holding the primary key ...
