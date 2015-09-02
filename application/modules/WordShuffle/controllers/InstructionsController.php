@@ -11,3 +11,5 @@ class WordShuffle_InstructionsController extends Common_Abstracts_RestController
         $_modelClass = 'WordShuffle_Model_Instructions';
 
 }
+
+
