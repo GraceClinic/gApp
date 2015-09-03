@@ -3,6 +3,12 @@
  *
  * Continuously revolves through array of Page objects as dictated by dwell time
  *
+ * Dependency injection:
+ * @param {App_Common_Models_Tools_Logger}  Logger  - reference to Logger object
+ * @param {object}  $interval   - reference to AngularJS $interval object
+ *
+ * @returns {wordshuffleDirectivesInstructionsSlideShow}     - returns the singleton that services directive features and functions
+ *
  **/
 
 /**
