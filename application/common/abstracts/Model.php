@@ -14,7 +14,7 @@
  * @property    string      mapperClassName     Name of the mapper class for instantiation as required
  * @property    string      className           - model class name
  * @property    object[]    msg                 - array of message objects keyed as ("type","text")
- * @property    Common_Abstracts_Mapper    Mapper      The mapper object for this model
+ * @property    Common_Abstracts_Mapper    Mapper     The mapper object for this model
  * @property    Common_Models_SysMan        SysMan      Convenient reference to global instance of application system manager
  */
 abstract class Common_Abstracts_Model
@@ -50,6 +50,8 @@ abstract class Common_Abstracts_Model
 
         // set mapperClassName per default naming convention
         $this->_mapperClassName = implode('_',$classArray).'_Mapper_'.$model;
+
+        $this->SysMan->Logger->info("So the Mapper  Class Name is ".$this->_mapperClassName);
 
         //Populate model if needed
         if(isset($data)) {
@@ -105,7 +107,7 @@ abstract class Common_Abstracts_Model
     {
         $method = 'set' . ucfirst($name);
         if(isset($value)){
-//            $this->SysMan->Logger->info($this->_className.'->__set(); $name = '.$name.'; isset($value) = '.isset($value));
+        //$this->SysMan->Logger->info($this->_className.'->__set(); $name = '.$name.'; isset($value) = '.isset($value));
             if (!method_exists($this, $method)) {
                 // else choose error handler. Throw Exception, Log it, or message user
                 throw new Exception("No Setter defined for " . $name . ".");
@@ -264,14 +266,15 @@ abstract class Common_Abstracts_Model
             $id = $this->id;
         }
         if($id > 0){
+            $this->SysMan->Logger->info(" I am in the Model Abstract and the id is ".$id);
             $success = $this->Mapper->find($id);
             if($success){
                 // nothing
-//                $success = $this->_validateModel();
-//                if(!$success){
-//                    throw new Exception(
-//                        $this->_className.'->find() retrieved a record that does not fit validation criteria specified in _validateModel() method.');
-//                }
+                //  $success = $this->_validateModel();
+                // if(!$success){
+                 //   throw new Exception(
+                //  $this->_className.'->find() retrieved a record that does not fit validation criteria specified in _validateModel() method.');
+                // }
             }else{
                 throw new Exception($this->_className.' failure to find record id = '.$id);
             };
@@ -305,11 +308,13 @@ abstract class Common_Abstracts_Model
      */
     public function findAll($by = null)
     {
-        $this->SysMan->Logger->info('START '.$this->_className.'->findAll() given $by = '.$by);
+       // $this->SysMan->Logger->info('START '.$this->_className.'->findAll() given $by = '.$by);
 
         $ret = $this->Mapper->findAll($by);
 
         $this->SysMan->Logger->info('END '.$this->_className.'->findAll(); return:  {'.PHP_EOL.print_r($ret,true).'}');
+
+        $this->SysMan->Logger->info("I am Out of Find all");
 
         return $ret;
     }
@@ -473,8 +478,7 @@ abstract class Common_Abstracts_Model
         }
 
         if(!$success){
-            throw new Exception('Attempt to set model from array yielded no properties set for model '.$this->_className.
-                '; values to set were the following:  ('.implode(',',$data));
+            throw new Exception('Attempt to set model from array yielded no properties set for model '.$this->_className. '; values to set were the following:  ('.implode(',',$data));
         }
 
     }

@@ -265,7 +265,7 @@ class WordShuffle_Model_Player extends Common_Abstracts_Model
 
               // $challengeModel = new WordShuffle_Model_Player_Challenge(array('id'=>$this->idChallenge));
                //$resArray=$challengeModel->findAll(array('id'));
-               $resArray = $this->Mapper->getChallengeQuestion(array('idChallenge'));
+               $resArray = $this->Mapper->getChallengeQuestion();
 
                $this->SysMan->Logger->info(" I am in the getchallenge function and result array is ".PHP_EOL."{{{".print_r($resArray,true)."}}}");
 

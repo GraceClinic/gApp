@@ -48,7 +48,6 @@ abstract class Common_Abstracts_RestController extends Zend_Rest_Controller
         //Disable Internal Zend Layout and Renderer. Allows for toJSONResponse to set JSON data
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender(TRUE);
-
         $this->_SysMan = Common_Models_SysMan::getInstance();
         $this->_className = get_class($this);
 
@@ -98,8 +97,14 @@ abstract class Common_Abstracts_RestController extends Zend_Rest_Controller
             "model" => $this->_model->toArray(true)
         );
         $this->_SysMan->Logger->info('END '.$this->_modelClass.'->toArray()','Common_Abstracts_RestController');
+        $rep=array();
+        $rep=$response;
+        $this->_SysMan->Logger->info('Printing the response before tuning into an json object =======>'.print_r($rep,true).'<======','TESTING');
+        $rep=json_encode($response);
 
+        $this->_SysMan->Logger->info('Printing the response after tuning into an json object =======>'.print_r($rep,true).'<======','TESTING');
         $this->getResponse()->appendBody(json_encode($response));
+
 
         $this->_SysMan->Logger->info('END '.$this->_className.'->indexAction()','Common_Abstracts_RestController');
     }
@@ -124,12 +129,16 @@ abstract class Common_Abstracts_RestController extends Zend_Rest_Controller
 
     public function putAction($model = Array()){
         $this->_SysMan->Logger->info('START '.$this->_className.'->putAction()','Common_Abstracts_RestController');
+
+        $this->_SysMan->Logger->info('So I am in Put Action');
         $this->_model = new $this->_modelClass($model);
         $this->_model->save();
-
         $response = Array(
             "model" => $this->_model->toArray(true)
         );
+
+      //  $rep=json_encode($response);
+      //  $this->_SysMan->Logger->info(" The JSON encode DATA IS".print_r($rep,true));
 
         $this->getResponse()->appendBody(json_encode($response));
         $this->_SysMan->Logger->info('END '.$this->_className.'->putAction()','Common_Abstracts_RestController');
@@ -139,6 +148,8 @@ abstract class Common_Abstracts_RestController extends Zend_Rest_Controller
         $this->_SysMan->Logger->info(
             'START '.$this->_className.'->postAction() for method '.$method.'; arguments ='.PHP_EOL.'{'.print_r($args,true).'}',
             'Common_Abstracts_RestController');
+
+        $this->_SysMan->Logger->info('So I am in Post Action');
         $this->_model = new $this->_modelClass($model);
         $this->_SysMan->Logger->info('START '.$this->_modelClass.'->'.$method.'()','Common_Abstracts_RestController');
         $results = $this->_model->$method($args);
@@ -162,6 +173,8 @@ abstract class Common_Abstracts_RestController extends Zend_Rest_Controller
     public function deleteAction($id = 0){
         $this->_SysMan->Logger->info(
             'START '.$this->_className.'->deleteAction()','Common_Abstracts_RestController');
+
+
 
         $this->_model = new $this->_modelClass($id);
 

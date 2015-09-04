@@ -346,8 +346,8 @@ class Common_Models_Session
             self::$Session->roundsPerGame = 3;
             self::$Session->secondsPerRound = 120;
             self::$Session->round = 0;
-//            self::$Session->start = null;
-//            self::$Session->end = null;
+            // self::$Session->start = null;
+            //  self::$Session->end = null;
             self::$Session->points = 0;
             self::$Session->roundAvg = 0;
             self::$Session->signInState = 0;
