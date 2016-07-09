@@ -1,0 +1,3 @@
+The my.ini file here is for reference only.  It is specific to an install and cannot simply be pasted into your MySQL configuration folders.  If you have issues with your MySQL install, you can use these as a reference for troubleshooting.  The INI file here is associated with a MySQL 5.5.15 install on a Windows 7 Professional machine.  The associated MySQL service launches with this command string:
+
+"C:\webserver\mysql\bin\mysqld" --defaults-file="C:\webserver\mysql\my.ini" MySQL.

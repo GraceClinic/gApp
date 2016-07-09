@@ -1,0 +1,233 @@
+<templateSet group="Grace">
+  <template name="ng_prop" value="/**&#10; * @property    $Prop$&#10; * $Description$&#10; *&#10; * @type    {$Type$}&#10; * @public&#10; **/&#10;Object.defineProperty(self,'$Prop$',{get: get$CapProp$, set: set$CapProp$, enumerable:true});&#10;var _$Prop$;&#10;function get$CapProp$(){&#10;    return _$Prop$;&#10;}&#10;function set$CapProp$(value){&#10;    _$Prop$ = value;&#10;}&#10;$END$" shortcut="TAB" description="Class property implemented internal to constructor" toReformat="false" toShortenFQNames="true">
+    <variable name="Prop" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="Description" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="Type" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="CapProp" expression="capitalize(Prop)" defaultValue="" alwaysStopAt="false" />
+    <context>
+      <option name="HTML_TEXT" value="false" />
+      <option name="HTML" value="false" />
+      <option name="XSL_TEXT" value="false" />
+      <option name="XML" value="false" />
+      <option name="SQL" value="false" />
+      <option name="JSP" value="false" />
+      <option name="CSS_PROPERTY_VALUE" value="false" />
+      <option name="CSS_DECLARATION_BLOCK" value="false" />
+      <option name="CSS_RULESET_LIST" value="false" />
+      <option name="CSS" value="false" />
+      <option name="CUCUMBER_FEATURE_FILE" value="false" />
+      <option name="JAVA_SCRIPT" value="true" />
+      <option name="TypeScript" value="false" />
+      <option name="CoffeeScript" value="false" />
+      <option name="PHP" value="false" />
+      <option name="HAML" value="false" />
+      <option name="OTHER" value="false" />
+    </context>
+  </template>
+  <template name="ng_pprop" value="/**&#10; * @property    $Prop$&#10; * $Description$&#10; * &#10; * @type    {$Type$} &#10; * @public&#10; **/&#10;Object.defineProperty($Model$.prototype,&quot;$Prop$&quot;,{get: get$CapProp$, set: set$CapProp$,enumerable:true});&#10;var _$Prop$ = [];&#10;function get$CapProp$(){&#10;    return _$Prop$[this.uid];&#10;}&#10;function set$CapProp$(value){&#10;    _$Prop$[this.uid] = value;&#10;}&#10;$END$" description="Shell template from creating a new class property on a Model prototype" toReformat="false" toShortenFQNames="true">
+    <variable name="Prop" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="Description" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="Model" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="Type" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="CapProp" expression="capitalize(Prop)" defaultValue="" alwaysStopAt="false" />
+    <context>
+      <option name="HTML_TEXT" value="false" />
+      <option name="HTML" value="false" />
+      <option name="XSL_TEXT" value="false" />
+      <option name="XML" value="false" />
+      <option name="SQL" value="false" />
+      <option name="JSP" value="false" />
+      <option name="CSS_PROPERTY_VALUE" value="false" />
+      <option name="CSS_DECLARATION_BLOCK" value="false" />
+      <option name="CSS_RULESET_LIST" value="false" />
+      <option name="CSS" value="false" />
+      <option name="CUCUMBER_FEATURE_FILE" value="false" />
+      <option name="JAVA_SCRIPT" value="true" />
+      <option name="TypeScript" value="false" />
+      <option name="CoffeeScript" value="false" />
+      <option name="PHP" value="false" />
+      <option name="HAML" value="false" />
+      <option name="OTHER" value="false" />
+    </context>
+  </template>
+  <template name="ng_pmethod" value="/**&#10; * @method   $Method$&#10; * $Description$&#10; *&#10; * @public                  - todo: change scoping of method as appropriate, for protected methods, prefix with &quot;_&quot;&#10; * @param    {}             - todo: document each parameter&#10; * @return   {$ReturnType$}&#10; */&#10;$Model$.prototype.$Method$ = function($Params$){&#10;    // todo: code method&#10;};&#10;$END$&#10;" description="AngularJS method created on model prototype" toReformat="false" toShortenFQNames="true">
+    <variable name="Method" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="Description" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="ReturnType" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="Model" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="Params" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="HTML_TEXT" value="false" />
+      <option name="HTML" value="false" />
+      <option name="XSL_TEXT" value="false" />
+      <option name="XML" value="false" />
+      <option name="SQL" value="false" />
+      <option name="JSP" value="false" />
+      <option name="CSS_PROPERTY_VALUE" value="false" />
+      <option name="CSS_DECLARATION_BLOCK" value="false" />
+      <option name="CSS_RULESET_LIST" value="false" />
+      <option name="CSS" value="false" />
+      <option name="CUCUMBER_FEATURE_FILE" value="false" />
+      <option name="JAVA_SCRIPT" value="true" />
+      <option name="TypeScript" value="false" />
+      <option name="CoffeeScript" value="false" />
+      <option name="PHP" value="false" />
+      <option name="HAML" value="false" />
+      <option name="OTHER" value="false" />
+    </context>
+  </template>
+  <template name="ng_method" value="/**&#10; * @method   $Method$&#10; * $Description$&#10; *&#10; * @public                      - todo: scope as public or protected, prefix name with &quot;_&quot; for protected                  &#10; * @param    {}                 - todo: document each parameter&#10; * @return   {$ReturnType$}&#10; */&#10;self.$Method$ = function($Args$){&#10;    // todo: code method&#10;};&#10;$END$" description="AngularJS public method within class constructor" toReformat="false" toShortenFQNames="true">
+    <variable name="Method" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="Description" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="ReturnType" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="Args" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="HTML_TEXT" value="false" />
+      <option name="HTML" value="false" />
+      <option name="XSL_TEXT" value="false" />
+      <option name="XML" value="false" />
+      <option name="SQL" value="false" />
+      <option name="JSP" value="false" />
+      <option name="CSS_PROPERTY_VALUE" value="false" />
+      <option name="CSS_DECLARATION_BLOCK" value="false" />
+      <option name="CSS_RULESET_LIST" value="false" />
+      <option name="CSS" value="false" />
+      <option name="CUCUMBER_FEATURE_FILE" value="false" />
+      <option name="JAVA_SCRIPT" value="true" />
+      <option name="TypeScript" value="false" />
+      <option name="CoffeeScript" value="false" />
+      <option name="PHP" value="false" />
+      <option name="HAML" value="false" />
+      <option name="OTHER" value="false" />
+    </context>
+  </template>
+  <template name="ng_const" value="/**&#10; * @constant    $ALL_CAPS_CONSTANT_NAME$       &#10; * $Description$&#10; *&#10; * @type    {$Type$}&#10; * @public&#10; **/&#10;Object.defineProperty($Model$.prototype,&quot;$ALL_CAPS_CONSTANT_NAME$&quot;,{value: $Value$, writable: false, enumerable: true});&#10;$END$" description="AngularJS model constant" toReformat="false" toShortenFQNames="true">
+    <variable name="ALL_CAPS_CONSTANT_NAME" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="Value" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="Description" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="Type" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="Model" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="HTML_TEXT" value="false" />
+      <option name="HTML" value="false" />
+      <option name="XSL_TEXT" value="false" />
+      <option name="XML" value="false" />
+      <option name="SQL" value="false" />
+      <option name="JSP" value="false" />
+      <option name="CSS_PROPERTY_VALUE" value="false" />
+      <option name="CSS_DECLARATION_BLOCK" value="false" />
+      <option name="CSS_RULESET_LIST" value="false" />
+      <option name="CSS" value="false" />
+      <option name="CUCUMBER_FEATURE_FILE" value="false" />
+      <option name="JAVA_SCRIPT" value="true" />
+      <option name="TypeScript" value="false" />
+      <option name="CoffeeScript" value="false" />
+      <option name="PHP" value="false" />
+      <option name="HAML" value="false" />
+      <option name="OTHER" value="false" />
+    </context>
+  </template>
+  <template name="ng_action" value="/**&#10; * @method   $Action$Action&#10; * $Description$&#10; *&#10; * @public&#10; * @param    {}&#10; */&#10;self.$Action$Action = function($Args$){&#10;    // todo: define any parameters and then code action logic&#10;};&#10;$END$" description="AngularJS controller action function" toReformat="false" toShortenFQNames="true">
+    <variable name="Action" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="Description" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="Args" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="HTML_TEXT" value="false" />
+      <option name="HTML" value="false" />
+      <option name="XSL_TEXT" value="false" />
+      <option name="XML" value="false" />
+      <option name="SQL" value="false" />
+      <option name="JSP" value="false" />
+      <option name="CSS_PROPERTY_VALUE" value="false" />
+      <option name="CSS_DECLARATION_BLOCK" value="false" />
+      <option name="CSS_RULESET_LIST" value="false" />
+      <option name="CSS" value="false" />
+      <option name="CUCUMBER_FEATURE_FILE" value="false" />
+      <option name="JAVA_SCRIPT" value="true" />
+      <option name="TypeScript" value="false" />
+      <option name="CoffeeScript" value="false" />
+      <option name="PHP" value="false" />
+      <option name="HAML" value="false" />
+      <option name="OTHER" value="false" />
+    </context>
+  </template>
+  <template name="php_prop" value="// todo: move property docblock to top of class&#10;/**&#10; * @property    $Type$         $Prop$        $Description$&#10; */&#10;private $$_$Prop$ = null;&#10;protected function set$CapProp$($value){&#10;    $this-&gt;_$Prop$ = ($Type$) $value;&#10;}&#10;protected function get$CapProp$(){&#10;    return $this-&gt;_$Prop$;&#10;}&#10;" description="Creates a new PHP model property" toReformat="false" toShortenFQNames="true">
+    <variable name="Type" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="Prop" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="Description" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="CapProp" expression="capitalize(Prop)" defaultValue="" alwaysStopAt="false" />
+    <context>
+      <option name="HTML_TEXT" value="false" />
+      <option name="HTML" value="false" />
+      <option name="XSL_TEXT" value="false" />
+      <option name="XML" value="false" />
+      <option name="SQL" value="false" />
+      <option name="JSP" value="false" />
+      <option name="CSS_PROPERTY_VALUE" value="false" />
+      <option name="CSS_DECLARATION_BLOCK" value="false" />
+      <option name="CSS_RULESET_LIST" value="false" />
+      <option name="CSS" value="false" />
+      <option name="CUCUMBER_FEATURE_FILE" value="false" />
+      <option name="JAVA_SCRIPT" value="false" />
+      <option name="TypeScript" value="false" />
+      <option name="CoffeeScript" value="false" />
+      <option name="PHP" value="true" />
+      <option name="HAML" value="false" />
+      <option name="OTHER" value="false" />
+    </context>
+  </template>
+  <template name="ng_func" value="/**&#10; * @function    _$function$&#10; * $Description$&#10; *&#10; * @private&#10; * @param   {}              - todo: define the parameters&#10; * @returns {$return$}      &#10; */&#10;function _$function$($param$){&#10;    // todo: define function&#10;}&#10;$END$" description="Adds a new private function" toReformat="false" toShortenFQNames="true">
+    <variable name="function" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="Description" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="return" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="param" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="HTML_TEXT" value="false" />
+      <option name="HTML" value="false" />
+      <option name="XSL_TEXT" value="false" />
+      <option name="XML" value="false" />
+      <option name="SQL" value="false" />
+      <option name="JSP" value="false" />
+      <option name="CSS_PROPERTY_VALUE" value="false" />
+      <option name="CSS_DECLARATION_BLOCK" value="false" />
+      <option name="CSS_RULESET_LIST" value="false" />
+      <option name="CSS" value="false" />
+      <option name="CUCUMBER_FEATURE_FILE" value="false" />
+      <option name="JAVA_SCRIPT" value="true" />
+      <option name="TypeScript" value="false" />
+      <option name="CoffeeScript" value="false" />
+      <option name="PHP" value="false" />
+      <option name="HAML" value="false" />
+      <option name="OTHER" value="false" />
+    </context>
+  </template>
+  <template name="php_method" value="/**&#10; * $Description$&#10; *&#10; * @public                 &#10; * @param               - todo: document all parameters&#10; * @return $return$     &#10; */&#10;public function $method$()&#10;{&#10;    // todo: define method&#10;}&#10;" description="Add new method" toReformat="false" toShortenFQNames="true">
+    <variable name="Description" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="return" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="method" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="PHP" value="true" />
+    </context>
+  </template>
+  <template name="php_func" value="/**&#10; * $Description$&#10; *&#10; * @private                 &#10; * @param               - todo: document all parameters&#10; * @return $return$     &#10; */&#10;private function _$func$()&#10;{&#10;    // todo: define method&#10;}&#10;" description="Add new private function" toReformat="false" toShortenFQNames="true">
+    <variable name="Description" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="return" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="func" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="PHP" value="true" />
+    </context>
+  </template>
+  <template name="ng_relay" value="/**&#10; * @method   $Method$&#10; * $Description$&#10; *&#10; * @public                     &#10; * @param    {}                 - todo: document each parameter&#10; */&#10;&#10;$Model$.prototype.$Method$ = function($Args$){&#10;    // todo: code method; relay methods placed on prototype to allow extensibility to other derived classes&#10;    &#10;    var _args = {};     // todo: roll method arguments into object array for relay to backend, remove if not needed&#10;    var _noModel = $suppressModel$;     // direct backend to suppress returning the model&#10;    self.relay('$Method$',_noModel,_args);&#10;};&#10;    &#10;/**&#10; * @method   _post$UCmethod$&#10; * Logic the follows return of the $Method$ from the backend.  Since $http request are asynchronous, this method allows&#10; * proper reaction after backend returns data from the relayed $Method$ method.&#10; *&#10; * @protected                     &#10; * @param    {object}   oResults   - the results returned from the backend after relay of the $Method$ method &#10; */&#10;$Model$.prototype._post$UCmethod$ = function(oResults){&#10;    // todo: code method:  Truly there is no &quot;protected&quot; scoping in JavaScript.  We show intent with an &quot;_&quot; prefix.&#10;};" description="AngularJS protected method within class constructor" toReformat="false" toShortenFQNames="true">
+    <variable name="Method" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="Description" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="Model" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="Args" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="suppressModel" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="UCmethod" expression="capitalize(Method)" defaultValue="" alwaysStopAt="false" />
+    <context>
+      <option name="JAVA_SCRIPT" value="true" />
+      <option name="JS_EXPRESSION" value="true" />
+      <option name="JS_STATEMENT" value="true" />
+    </context>
+  </template>
+</templateSet>

@@ -1,0 +1,3 @@
+The .conf files are for reference only.  They are specific to an install and cannot simply be pasted into your Apache configuration folders.  If you have issues with your Apache install, you can use these as a reference for troubleshooting.  The .conf files here are associated with an Apache 2.4 install on a Windows 7 Professional machine.  The associated Apache service launches with this command string:
+
+"C:\webserver\apache24\bin\httpd.exe" -k runservice

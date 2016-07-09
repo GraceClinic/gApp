@@ -1,0 +1,1 @@
+The php.ini file here is for reference only.  It is specific to an install and cannot simply be pasted into your PHP configuration folder.  If you have issues with your PHP install, you can use this as a reference for troubleshooting.  The INI file here is associated with a PHP5 install on a Windows 7 Professional machine.
