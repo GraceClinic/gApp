@@ -8,6 +8,7 @@ abstract class Common_Abstracts_DbTable extends Zend_Db_Table_Abstract
      * overwrite of the Mapper abstract, which assumes that this returns a string
      *
      * @return string
+     * @throws exception
      */
     public function getPrimary(){
 		// if findAll() method is used, it will run the _setupPrimaryKey()
