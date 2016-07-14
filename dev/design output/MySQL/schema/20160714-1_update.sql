@@ -132,7 +132,7 @@ BEGIN
 END$$
 
 DELIMITER ;
-
+#procedure ends 
 DELETE FROM WordList WHERE id > 100;
 DROP TABLE IF EXISTS `favouriteplayer`;
 CREATE TABLE `favouriteplayer`(id INT(10), wordId INT(10) UNSIGNED NOT NULL, playerId INT(10) UNSIGNED NOT NULL, PRIMARY KEY(id), FOREIGN KEY(wordId) REFERENCES WordList(id), FOREIGN KEY(playerId) REFERENCES Player(id));
