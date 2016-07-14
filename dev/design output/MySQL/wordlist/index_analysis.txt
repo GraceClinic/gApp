@@ -1,0 +1,11 @@
+before adding index(3) to column Word on Table WordList, result obtained from the events_statements_history_long table of the performance schema is =>
+157 | 0.043486 | SELECT count(*) from WordList where like 'asc%'
+
+and then after adding the index(3) and running the same query, result from the performance schema is =>
+207 | 0.012078 | SELECT count(*) from WordList where like 'asc%'
+
+Improvement Observed for the search (retrieve) query: drop of 0.031408seconds 
+i.e. The query time was 72.22% less when the index existed on table;
+
+Note: caching was disabled for the queries, also instrumentation was disabled for other existing foreground threads except for the current user;
+
