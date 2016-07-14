@@ -1,0 +1,114 @@
+{
+	"id": "1b94fca4-b5a5-6edf-5664-572d47ce4d37",
+	"name": "gApp",
+	"description": "Grace training application",
+	"order": [],
+	"folders": [
+		{
+			"id": "3fef53a6-b74e-6e65-f1cd-be1ac4a80dea",
+			"name": "Instructions",
+			"description": "Request associated with the WordShuffle Instructions controller",
+			"order": [
+				"79122461-9603-e6a0-c2d3-7955eaf43502"
+			],
+			"owner": "419144"
+		},
+		{
+			"id": "3c183441-be82-75b0-a01c-665a10fdf8af",
+			"name": "Player",
+			"description": "Request against Player endpoint",
+			"order": [
+				"d43bc1c8-2571-bcc8-6d9a-53d569129ceb",
+				"9a97d204-d120-19eb-b6db-7095c5ac12f8",
+				"e5c1e6ca-6370-09b5-7a48-8e89d7541503"
+			],
+			"owner": "419144",
+			"collectionId": "1b94fca4-b5a5-6edf-5664-572d47ce4d37"
+		}
+	],
+	"timestamp": 1467755401544,
+	"owner": "419144",
+	"remoteLink": "",
+	"public": false,
+	"published": false,
+	"requests": [
+		{
+			"id": "79122461-9603-e6a0-c2d3-7955eaf43502",
+			"headers": "",
+			"url": "http://www.gapp.com/WordShuffle/Instructions/?id=1",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1468326032001,
+			"name": "GET Instructions 1",
+			"description": "Instructions for Wordshuffle which is id=1.",
+			"collectionId": "1b94fca4-b5a5-6edf-5664-572d47ce4d37",
+			"responses": []
+		},
+		{
+			"id": "9a97d204-d120-19eb-b6db-7095c5ac12f8",
+			"headers": "Content-Type: application/json\n",
+			"url": "http://www.gapp.com/WordShuffle/Player/",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "PUT",
+			"data": [],
+			"dataMode": "raw",
+			"tests": "var data = JSON.parse(responseBody);\npostman.setEnvironmentVariable(\"idPlayer\",data.model.Id);\n\ntests[\"Verify Player Name\"] = data.model.Name == \"playerName\";\ntests[\"Verify idChallenge\"] = data.model.IdChallenge === 1;\ntests[\"Verify Secret\"] = data.model.Secret == \"mySecret\"\n",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1468409085042,
+			"name": "Create New Player",
+			"description": "",
+			"collectionId": "1b94fca4-b5a5-6edf-5664-572d47ce4d37",
+			"responses": [],
+			"rawModeData": "{\n    \"model\":{\n        \"name\":\"playerName\",\n        \"secret\":\"mySecret\",\n        \"idChallenge\":1\n    }\n}"
+		},
+		{
+			"id": "d43bc1c8-2571-bcc8-6d9a-53d569129ceb",
+			"headers": "",
+			"url": "http://www.gapp.com/WordShuffle/Player/",
+			"pathVariables": {},
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "1b94fca4-b5a5-6edf-5664-572d47ce4d37",
+			"data": null,
+			"dataMode": "params",
+			"name": "Get All Players",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1468422347301,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"folder": "3c183441-be82-75b0-a01c-665a10fdf8af"
+		},
+		{
+			"id": "e5c1e6ca-6370-09b5-7a48-8e89d7541503",
+			"headers": "Content-Type: application/json\n",
+			"url": "http://www.gapp.com/WordShuffle/Player/",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "PUT",
+			"data": [],
+			"dataMode": "raw",
+			"version": 2,
+			"tests": "var data = JSON.parse(responseBody);\n\ntests[\"Verify Player Name\"] = data.model.Name == \"newName\";\n",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1468409106145,
+			"name": "Update Newly Created Player's Name",
+			"description": "",
+			"collectionId": "1b94fca4-b5a5-6edf-5664-572d47ce4d37",
+			"responses": [],
+			"rawModeData": "{\n    \"model\":{\n        \"id\":{{idPlayer}},\n        \"name\":\"newName\"\n    }\n}"
+		}
+	]
+}
