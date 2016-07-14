@@ -96,9 +96,12 @@ BEGIN
                 SET wsRoundIndex = wsRoundIndex + wsRound;
                 SET wsGameId = wsGameId + 1;
                 SET wsEntryNumber = wsEntryNumber + 1;
+                SET wsRound = 1;
+                SET roundTime = 240;
             END WHILE;
             SET totalRoundEntries = totalRoundEntries + wsGameEntry;
             SET iterator = iterator + 1;
+            SET wsGameEntry = 1;
 		END WHILE;
         
 	ELSE
