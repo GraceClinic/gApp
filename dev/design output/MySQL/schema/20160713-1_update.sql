@@ -88,14 +88,14 @@ if(idgameCheck is null and idinstructionCheck is null and idpageCheck is null)
   SET j = 1;
 
  insert into gapp.games values (idGame,CONCAT('Name_',nameTitleNo));
+
+ SET instnCnt = (SELECT COUNT(*) FROM gapp.instructions where id>=101);
+ SET modRes = instnCnt mod 10;
+  SET modRes = modRes+ 1;
+ insert into gapp.instructions values (idInstruction, idGame, CONCAT('Title_',nameTitleNo), CONCAT('app/assets/wordshuffle/testing/test-',modRes,'.png'));
  SET nameTitleNo = nameTitleNo + 1;
 
- SET instnCnt = (SELECT COUNT(*) FROM gapp.instructions);
- SET modRes = instnCnt mod 9;
- SET modRes = modRes+ 1;
- insert into gapp.instructions values (idInstruction, idGame, CONCAT('Title_',nameTitleNo), CONCAT('app/assets/wordshuffle/testing/test-',modRes,'.png'));
-
- SET instnRecordsCnt = (SELECT COUNT(*) FROM gapp.instructions);
+ SET instnRecordsCnt = (SELECT COUNT(*) FROM gapp.instructions where id >=101);
 
 	IF ((instnRecordsCnt mod 3 = 0) AND (instnRecordsCnt mod 5 = 0))
 	 then
