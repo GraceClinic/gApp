@@ -138,6 +138,8 @@ DELETE FROM WordList WHERE id > 100;
 DROP TABLE IF EXISTS `favouriteplayer`;
 CREATE TABLE `favouriteplayer`(id INT(10), wordId INT(10) UNSIGNED NOT NULL, playerId INT(10) UNSIGNED NOT NULL, PRIMARY KEY(id), FOREIGN KEY(wordId) REFERENCES WordList(id), FOREIGN KEY(playerId) REFERENCES Player(id));
 
+#altering page table, => auto increment to the primary key
+alter table Page modify column id INT NOT NULL AUTO_INCREMENT;
 
 #updating wordList
 use gapp;
