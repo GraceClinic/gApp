@@ -1,4 +1,5 @@
 USE `gapp`;
+
 DROP procedure IF EXISTS `Populate_Players`;
 
 DELIMITER $$
@@ -48,7 +49,7 @@ BEGIN
 			SET cOffId = iterator % 10;
 			SELECT id  from sortedChallenge limit cOffId, 1 INTO cId;
             #creating dynamic player entries
-			INSERT INTO Player(id, name, idChallenge, createDate, modifyDate) VALUES (101 + iterator, concat("Player", iterator + 1), cId, NOW(), NOW());
+			INSERT INTO Player(id, name, idChallenge, secret, createDate, modifyDate) VALUES (101 + iterator, concat("Player", iterator + 1), cId, concat("Player", iterator + 1),  NOW(), NOW());
 			#calculate roundTime before inserting into WSGame
             #iterator + 1 refers each player
             IF (iterator + 1) % 15 = 0 THEN
@@ -86,10 +87,10 @@ BEGIN
                 ELSE
                     SET wsGameStatus = (wsEntryNumber + 1) % 5;
                 END IF;
-                INSERT INTO WSGame(id, idPlayer, roundsPerGame, secondsPerRound, points, roundAvg, `status`) VALUES (wsGameId, 101 + iterator, wsRound, wsRound, totalPoints, roundAvg, wsGameStatus);
+                INSERT INTO WSGame(id, idPlayer, roundsPerGame, secondsPerRound, start, `end`, points, roundAvg, `status`) VALUES (wsGameId, 101 + iterator, wsRound, roundTime, now(), now(), totalPoints, roundAvg, wsGameStatus);
                 SET roundIterator = 1;
                 WHILE roundIterator <= wsRound DO
-                    INSERT INTO wsRound(id, idWSGame, time, points, wordCount, `index`) VALUES (wsRoundId, wsGameId, roundTime, wsRoundId, 2 * (wsRoundIndex + roundIterator) + 20, wsRoundIndex + roundIterator);
+                    INSERT INTO wsRound(id, idWSGame, time, points, wordCount, start, `end`, `index`) VALUES (wsRoundId, wsGameId, roundTime, wsRoundId, 2 * (wsRoundIndex + roundIterator) + 20, now(), now(), wsRoundIndex + roundIterator);
                     SET wsRoundId = wsRoundId + 1;
                     SET roundIterator = roundIterator + 1;
                 END WHILE;
@@ -137,6 +138,8 @@ DELETE FROM WordList WHERE id > 100;
 DROP TABLE IF EXISTS `favouriteplayer`;
 CREATE TABLE `favouriteplayer`(id INT(10), wordId INT(10) UNSIGNED NOT NULL, playerId INT(10) UNSIGNED NOT NULL, PRIMARY KEY(id), FOREIGN KEY(wordId) REFERENCES WordList(id), FOREIGN KEY(playerId) REFERENCES Player(id));
 
+#altering page table, => auto increment to the primary key
+alter table Page modify column id INT NOT NULL AUTO_INCREMENT;
 
 #updating wordList
 use gapp;
