@@ -21,7 +21,7 @@ class WordShuffle_Model_Mapper_Round extends Common_Abstracts_Mapper
             'start'         => 'start',
             'end'           => 'end',
             'index'         => 'index',
-            'idNoteBook'    => 'idNoteBook'
+            'idNoteBook'    =>  NULL
         ),
         // todo:  build find all array of foreign keys that index a group of records for this table
         $_findAllBy = array(
