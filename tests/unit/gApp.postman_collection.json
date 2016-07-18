@@ -5,15 +5,6 @@
 	"order": [],
 	"folders": [
 		{
-			"id": "0882162d-cb08-65c0-b57c-d24cd6a912f8",
-			"name": "Games",
-			"description": "",
-			"order": [
-				"27b64f68-39f8-a87f-384f-6fb4979e3458"
-			],
-			"owner": "791845"
-		},
-		{
 			"id": "2a6dea3a-4dbb-13cd-fd46-408f747584e5",
 			"name": "Instructions",
 			"description": "Request associated with the WordShuffle Instructions controller",
@@ -86,25 +77,6 @@
 			"currentHelper": "normal",
 			"helperAttributes": {},
 			"folder": "b58337f9-3e98-980a-cc2e-4e6861c9cb99"
-		},
-		{
-			"id": "27b64f68-39f8-a87f-384f-6fb4979e3458",
-			"headers": "",
-			"url": "http://www.gapp.com/WordShuffle/Games",
-			"preRequestScript": "",
-			"pathVariables": {},
-			"method": "GET",
-			"data": null,
-			"dataMode": "params",
-			"tests": null,
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1468506410799,
-			"name": "GET Instructions 1",
-			"description": "Instructions for Wordshuffle which is id=1.",
-			"collectionId": "f503467f-e552-616d-706d-0e3b2d16fae6",
-			"responses": [],
-			"folder": "0882162d-cb08-65c0-b57c-d24cd6a912f8"
 		},
 		{
 			"id": "280493ce-dddb-d311-236c-5e291b09f776",
