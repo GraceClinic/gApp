@@ -37,7 +37,7 @@ BEGIN
             SET challengeEntries = challengeEntries + 1;
             SET challengeIds = challengeIds + 1;
         END WHILE;
-        
+
         CREATE VIEW sortedChallenge AS SELECT id FROM Challenge where id > 100 order by id asc;
         SET iterator = 0;
         SET totalRoundEntries = 0;
