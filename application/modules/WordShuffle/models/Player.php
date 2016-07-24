@@ -5,6 +5,8 @@
  * 
  * @package WordShuffle_Model
  * @class   WordShuffle_Model_Player
+ * @property    boolean         loginAccess        if not set, won't let you set properties to the model
+ * @property    array         challenges        associative array, containing secret questions and their ids
  * @property    int         id              -- Player Id
  * @property    string      name            -- Name of the player
  * @property    int         idChallenge     -- Challenge completed by a player
@@ -27,6 +29,7 @@ class WordShuffle_Model_Player extends Common_Abstracts_Model
      * Also, this is the time for writing session information as appropriate.
      *
      **/
+    public static $firstLogin = false;
     protected function init()
     {
 		parent::init();
@@ -37,16 +40,34 @@ class WordShuffle_Model_Player extends Common_Abstracts_Model
         ));
         
 		// todo:  determine extension of constructor logic, do not override original init() function, only extend it
-
     }
 
     /************************************
      * MODEL PROPERTIES SETTERS / GETTERS
      ************************************/
 
+    private $_loginAccess = false;
+    protected function setLoginAccess($value){
+        $this->_loginAccess = (boolean) $value;
+    }
+    protected function getLoginAccess(){
+        return $this->_loginAccess;
+    }
+
+    private $_challenges = null;
+    protected function setChallenges($value){
+        $this->_challenges = (array) $value;
+    }
+    protected function getChallenges(){
+        return $this->_challenges;
+    }
+    
+    
     private $_id = null;
     protected function setId($value){
-        $this->_id = (int) $value;
+        if ($this->getLoginAccess()) {
+            $this->_id = (int) $value;
+        }
     }
     protected function getId(){
         return $this->_id;
@@ -54,7 +75,9 @@ class WordShuffle_Model_Player extends Common_Abstracts_Model
     
     private $_name = null;
     protected function setName($value){
-        $this->_name = (string) $value;
+        if ($this->getLoginAccess()) {
+            $this->_name = (string) $value;
+        }
     }
     protected function getName(){
         return $this->_name;
@@ -62,7 +85,15 @@ class WordShuffle_Model_Player extends Common_Abstracts_Model
 
     private $_idChallenge = null;
     protected function setIdChallenge($value){
-        $this->_idChallenge = (int) $value;
+        $sysmanReflection = new ReflectionClass("Common_Models_SysMan");
+        if ($this->getLoginAccess()) {
+            if (self::$firstLogin || $this->SysMan->Session->signInState == $sysmanReflection->getConstant("SIGNED_IN")) {
+                $this->_idChallenge = (int) $value;
+            }
+            else {
+                throw new Exception("can't change id, Session signIn state doesn't confer");
+            }
+        }
     }
     protected function getIdChallenge(){
         return $this->_idChallenge;
@@ -70,7 +101,15 @@ class WordShuffle_Model_Player extends Common_Abstracts_Model
     
     private $_secret = null;
     protected function setSecret($value){
-        $this->_secret = (string) $value;
+        $sysmanReflection = new ReflectionClass("Common_Models_SysMan");
+        if ($this->getLoginAccess()) {
+            if (self::$firstLogin || $this->SysMan->Session->signInState == $sysmanReflection->getConstant("SIGNED_IN")) {
+                $this->_secret = (string) $value;
+            }
+            else {
+                throw new Exception("can't change secret, Session signIn state doesn't confer");
+            }
+        }
     }
     protected function getSecret(){
         return $this->_secret;
@@ -78,7 +117,9 @@ class WordShuffle_Model_Player extends Common_Abstracts_Model
 
     private $_createDate = null;
     protected function setCreateDate($value){
-        $this->_createDate = $value;
+        if ($this->getLoginAccess()) {
+            $this->_createDate = $value;
+        }
     }
     protected function getCreateDate(){
         return $this->_createDate;
@@ -86,7 +127,9 @@ class WordShuffle_Model_Player extends Common_Abstracts_Model
 
     private $_modifyDate = null;
     protected function setModifyDate($value){
-        $this->_modifyDate = $value;
+        if ($this->getLoginAccess()) {
+            $this->_modifyDate = $value;
+        }
     }
     protected function getModifyDate(){
         return $this->_modifyDate;
@@ -95,7 +138,9 @@ class WordShuffle_Model_Player extends Common_Abstracts_Model
 
     private $_idNoteBook = null;
     protected function setIdNoteBook($value){
-        $this->_idNoteBook = (int) $value;
+        if ($this->getLoginAccess()) {
+            $this->_idNoteBook = (int) $value;
+        }
     }
     protected function getIdNoteBook(){
         return $this->_idNoteBook;
@@ -106,6 +151,28 @@ class WordShuffle_Model_Player extends Common_Abstracts_Model
      * MODEL PUBLIC METHODS declaration / definition
      ****************************************/
     // todo:  use "php_method" live template to insert new methods
+    /**
+     * login method, allows users to sigIn with correct set of name and sequence
+     *
+     * @public
+     * @param   array   parameters  contains an associative array containing name and secret
+     * @return string
+     */
+    public function login($parameters)
+    {
+        $this->SysMan->Logger->info("Start of login method");
+        $validationResult = $this->Mapper->validateSecret($parameters->name, $parameters->secret);
+        $this->SysMan->Logger->info("End of validateSecret, method returned to login");
+        if ($validationResult["validateSecret"] == "found") {
+            $this->setLoginAccess(true);
+            self::$firstLogin = true;
+            $this->excludeFromJSON(["secret"]);
+            $this->setFromArray($validationResult["result"]->toArray(true));
+        }
+        $this->SysMan->Logger->info("End of login method");
+        return $validationResult;
+    }
+
 
     /************************************
      * MODEL PRIVATE FUNCTIONS definition
