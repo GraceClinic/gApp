@@ -46,5 +46,49 @@ class WordShuffle_Model_Mapper_Player extends Common_Abstracts_Mapper
     {
         // todo:  determine what you will do after a save operation, document if you include
     }
- 
+    
+    /**
+     * validates the secret obtained with the secret obtained from the database
+     *
+     * @public  validateSecret
+     * @param   string  name    username
+     * @param   string  secret  userpassword
+     * @return array
+     */
+    public function validateSecret($name, $secret)
+    {
+        $this->_model->SysMan->Logger->info("Start of validateSecret");
+        $where = "name = '$name'";
+        $result = $this->getDbTable()->fetchAll($where);
+        $this->_model->SysMan->Logger->info("rowset obtained from fetchAll" . print_r($result, true));
+        if (count($result) == 0) {
+            return array("validateSecret"=>"notFound", "result"=>[]);
+        }
+        else if (count($result) == 1) {
+            if ($result[0]->secret == $secret) {
+                return array("validateSecret"=>"found", "result"=> $result[0]);
+            }
+            return array("validateSecret"=>"wrongCredentials", "result"=>[]);
+        }
+        else {
+            return array("validateSecret"=>"multipleRecords", "result"=>[]);
+        }
+    }
+    
+    /**
+     * getChallenges gives you the challenge question for the player
+     *
+     * @public                 
+     * @param   int     challengeId     challenge id from the player
+     * @return string
+     */
+    public function getChallenges($challengeId)
+    {
+        $this->_model->SysMan->Logger->info("Start of getChallenges method()");
+        //setting the dbTable to challenge table
+        $this->setDbTable("WordShuffle_Model_DbTable_Challenge");
+        $where = "id = $challengeId";
+        $result = $this->getDbTable()->fetchAll($where)->toArray();
+        $this->_model->challenges = $result;
+    }
 }
