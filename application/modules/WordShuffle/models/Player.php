@@ -29,9 +29,10 @@ class WordShuffle_Model_Player extends Common_Abstracts_Model
      * Also, this is the time for writing session information as appropriate.
      *
      **/
-    public static $firstLogin = false;
+    protected $_requestType;
     protected function init()
     {
+        //$_requestType = Zend_Controller_Front::getInstance()->getRequest()->getParams()["action"];
 		parent::init();
 		
 		// todo: itemize any model properties which should be excluded from the model when sending response
@@ -51,7 +52,29 @@ class WordShuffle_Model_Player extends Common_Abstracts_Model
         $this->_loginAccess = (boolean) $value;
     }
     protected function getLoginAccess(){
+        $sysmanReflection = new ReflectionClass("Common_Models_SysMan");
+        $_paramsArray = Zend_Controller_Front::getInstance()->getRequest()->getParams();
+        if ($this->SysMan->Session->signInState == $sysmanReflection->getConstant("SIGNED_IN") && $this->getId() === $this->SysMan->Session->idPlayer) {
+            return true;
+        }
+        //while logging in, to set the model properties, it is returned true, and set when the name and secret matches the database record and returned from validateSecret()
+        if ($this->_loginAccess) {
+            return true;
+        }
+        elseif ($_paramsArray["action"] == "put") {
+            if (array_key_exists("model", $_paramsArray) && !property_exists($_paramsArray["model"], "id")) {
+                return true;
+            }
+            elseif (!($this->SysMan->Session->signInState == $sysmanReflection->getConstant("SIGNED_IN"))) {
+                throw new Exception("You are not signed In");
+            }
+            elseif(!($this->getId() === $this->SysMan->Session->idPlayer)) {
+                throw new Exception("Accessing Unauthorized records");
+            }
+            return true;
+        }
         return $this->_loginAccess;
+
     }
 
     private $_challenges = null;
@@ -65,9 +88,7 @@ class WordShuffle_Model_Player extends Common_Abstracts_Model
     
     private $_id = null;
     protected function setId($value){
-        if ($this->getLoginAccess()) {
-            $this->_id = (int) $value;
-        }
+        $this->_id = (int) $value;
     }
     protected function getId(){
         return $this->_id;
@@ -85,15 +106,16 @@ class WordShuffle_Model_Player extends Common_Abstracts_Model
 
     private $_idChallenge = null;
     protected function setIdChallenge($value){
-        $sysmanReflection = new ReflectionClass("Common_Models_SysMan");
+        //$sysmanReflection = new ReflectionClass("Common_Models_SysMan");
         if ($this->getLoginAccess()) {
-            if (self::$firstLogin || $this->SysMan->Session->signInState == $sysmanReflection->getConstant("SIGNED_IN")) {
-                $this->_idChallenge = (int) $value;
-            }
-            else {
-                throw new Exception("can't change id, Session signIn state doesn't confer");
-            }
+            //if ($this->SysMan->Session->signInState == $sysmanReflection->getConstant("SIGNED_IN")) {
+            $this->_idChallenge = (int)$value;
+            //}
         }
+        else{
+            throw new Exception("can't change id, Session signIn state doesn't confer");
+        }
+
     }
     protected function getIdChallenge(){
         return $this->_idChallenge;
@@ -103,12 +125,12 @@ class WordShuffle_Model_Player extends Common_Abstracts_Model
     protected function setSecret($value){
         $sysmanReflection = new ReflectionClass("Common_Models_SysMan");
         if ($this->getLoginAccess()) {
-            if (self::$firstLogin || $this->SysMan->Session->signInState == $sysmanReflection->getConstant("SIGNED_IN")) {
-                $this->_secret = (string) $value;
-            }
-            else {
-                throw new Exception("can't change secret, Session signIn state doesn't confer");
-            }
+            //if ($this->SysMan->Session->signInState == $sysmanReflection->getConstant("SIGNED_IN")) {
+            $this->_secret = (string)$value;
+            //}
+        }
+        else {
+            throw new Exception("can't change secret, Session signIn state doesn't confer");
         }
     }
     protected function getSecret(){
@@ -165,8 +187,7 @@ class WordShuffle_Model_Player extends Common_Abstracts_Model
         $this->SysMan->Logger->info("End of validateSecret, method returned to login");
         if ($validationResult["validateSecret"] == "found") {
             $this->setLoginAccess(true);
-            self::$firstLogin = true;
-            $this->excludeFromJSON(["secret"]);
+            $this->excludeFromJSON(["secret", "loginAccess"]);
             $this->setFromArray($validationResult["result"]->toArray(true));
         }
         $this->SysMan->Logger->info("End of login method");

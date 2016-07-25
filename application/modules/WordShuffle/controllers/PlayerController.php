@@ -16,7 +16,7 @@ class WordShuffle_PlayerController extends Common_Abstracts_RestController
 
     // todo:  determine extend the init(), do not override original init() function
     /**
-     * overriding the postAction init method
+     * extending the postAction init method
      *
      * @public
      * @param               - todo: document all parameters
@@ -24,40 +24,20 @@ class WordShuffle_PlayerController extends Common_Abstracts_RestController
      */
     public function init()
     {
-        //Disable Internal Zend Layout and Renderer. Allows for toJSONResponse to set JSON data
-        $this->_helper->layout->disableLayout();
-        $this->_helper->viewRenderer->setNoRender(TRUE);
-
-        $this->_SysMan = Common_Models_SysMan::getInstance();
-        $this->_className = get_class($this);
-
-        $this->_SysMan->Logger->info('START '.$this->_className.'.init()','Common_Abstracts_RestController');
-
-        //AngularJS POST encodes the data element as a JSON object.
-        //Zend/PHP has trouble understanding that format without calling json_decode first.
         try {
             $contents = file_get_contents("php://input");
-            $JSONPostParams = 'none';
             if ($contents) {
-                $JSONPostParams = json_decode($contents);
-                // transfer contents of JSON data array to Post parameters
+                json_decode($contents);
                 if (json_last_error()) {
                     throw new Exception("Invalid format passed as payload");
                 }
-                foreach ($JSONPostParams as $key => $value) {
-                    $this->getRequest()->setParam($key, $value);
-                }
             }
-            $this->_SysMan->Logger->info(
-                'END '.get_class($this).'.init(); extracted parameters = '.PHP_EOL.'{'.print_r($JSONPostParams,true).'}',
-                'Common_Abstracts_RestController'
-            );
-        } catch (Exception $e) {
-            // todo:  log error
-//            $this->SysMan->log->err("Problem applying JSON post parameters");
+        }
+        catch (Exception $e) {
             $this->SERVER_ERROR = true;
             $this->ERROR_INFO = $e->getMessage();
         }
+        parent::init();
     }
 
 
@@ -66,6 +46,19 @@ class WordShuffle_PlayerController extends Common_Abstracts_RestController
     // todo:  determine if you will extend or override the abstract getAction()
 
     // todo:  determine if you will extend or override the abstract putAction()
+    public function putAction($model = Array()){
+        $this->_SysMan->Logger->info('START '.$this->_className.'->putAction()','Common_Abstracts_RestController');
+        $this->_model = new $this->_modelClass($model);
+        $this->_model->excludeFromJSON(["challenges", "loginAccess"]);
+        $this->_model->save();
+
+        $response = Array(
+            "model" => $this->_model->toArray(true)
+        );
+
+        $this->getResponse()->appendBody(json_encode($response));
+        $this->_SysMan->Logger->info('END '.$this->_className.'->putAction()','Common_Abstracts_RestController');
+    }
 
     // todo:  determine if you will extend or override the abstract postAction()
     /**
@@ -88,8 +81,6 @@ class WordShuffle_PlayerController extends Common_Abstracts_RestController
                 $this->_model = count((array)$model) ? new $this->_modelClass($model) : new $this->_modelClass();
                 $this->_SysMan->Logger->info('START '.$this->_modelClass.'->'.$method.'()','Common_Abstracts_RestController');
                 $results = $this->_model->$method($args);
-                //$temp = $this;
-                //print_r ($this->_model);
                 switch($results["validateSecret"]) {
                     case "found":
                         $this->_unAuthorizedFlag = false;
@@ -102,7 +93,6 @@ class WordShuffle_PlayerController extends Common_Abstracts_RestController
                             "results" => true,
                             "model" => $this->_model->toArray(true)
                         );
-                        WordShuffle_Model_Player::$firstLogin = false;
                         break;
                     case "notFound":
                         $this->_unAuthorizedFlag = true;
@@ -127,7 +117,9 @@ class WordShuffle_PlayerController extends Common_Abstracts_RestController
             case "logout":
                 $this->_SysMan->Logger->info("Start of logout()");
                 $this->_SysMan->Logger->info("Session before logout" . print_r($this->_SysMan->Session->toArray(), true));
-                Zend_Session::namespaceUnset("gapp");
+                //Zend_Session::namespaceUnset("gapp");
+                Zend_Session::destroy();
+                //Common_Models_Session::initSession();
                 $response = Array("message" => "logged out, session destroyed");
                 $results = true;
                 $this->_SysMan->Logger->info("Session after logout" . print_r($this->_SysMan->Session->toArray(), true));
@@ -136,7 +128,7 @@ class WordShuffle_PlayerController extends Common_Abstracts_RestController
             default:
                 $this->_badRequest = true;
                 $response = Array(
-                    "messgae" => "The method name pased is not supported"
+                    "messgae" => "The method name pased is not supported, or no method passed"
                 );
         }
         $this->_SysMan->Logger->info(
