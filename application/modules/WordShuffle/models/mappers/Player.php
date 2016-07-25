@@ -39,7 +39,7 @@ class WordShuffle_Model_Mapper_Player extends Common_Abstracts_Mapper
 
     protected function _preSave()
     {
-
+        $this->_model->name = strtolower($this->_model->name);
     }
 
     protected function _postSave()
@@ -90,5 +90,6 @@ class WordShuffle_Model_Mapper_Player extends Common_Abstracts_Mapper
         $where = "id = $challengeId";
         $result = $this->getDbTable()->fetchAll($where)->toArray();
         $this->_model->challenges = $result;
+        $this->setDbTable("WordShuffle_Model_DbTable_Player");
     }
 }
