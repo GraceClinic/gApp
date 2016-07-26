@@ -29,7 +29,6 @@ class WordShuffle_Model_Player extends Common_Abstracts_Model
      * Also, this is the time for writing session information as appropriate.
      *
      **/
-    protected $_requestType;
     protected function init()
     {
         //$_requestType = Zend_Controller_Front::getInstance()->getRequest()->getParams()["action"];
@@ -123,7 +122,6 @@ class WordShuffle_Model_Player extends Common_Abstracts_Model
     
     private $_secret = null;
     protected function setSecret($value){
-        $sysmanReflection = new ReflectionClass("Common_Models_SysMan");
         if ($this->getLoginAccess()) {
             //if ($this->SysMan->Session->signInState == $sysmanReflection->getConstant("SIGNED_IN")) {
             $this->_secret = (string)$value;
