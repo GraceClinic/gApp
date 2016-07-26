@@ -66,6 +66,14 @@ abstract class Common_Abstracts_RestController extends Zend_Rest_Controller
                     $this->getRequest()->setParam($key, $value);
                 }
             }
+            else if($_REQUEST)
+            {
+                //Fetch parameters from URL as key value pairs
+                $JSONPostParams = $_REQUEST;
+                foreach ($JSONPostParams as $item => $val) {
+                    $this->getRequest()->setParam($item, $val);
+                }
+            }
             $this->_SysMan->Logger->info(
                 'END '.get_class($this).'.init(); extracted parameters = '.PHP_EOL.'{'.print_r($JSONPostParams,true).'}',
                 'Common_Abstracts_RestController'
