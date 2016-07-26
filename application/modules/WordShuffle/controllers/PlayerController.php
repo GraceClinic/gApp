@@ -51,12 +51,16 @@ class WordShuffle_PlayerController extends Common_Abstracts_RestController
         $this->_model = new $this->_modelClass($model);
         $this->_model->excludeFromJSON(["challenges", "loginAccess"]);
         $this->_model->save();
+        if ($this->_model->id) {
+            $this->getAction($this->_model->id);
+        }
+        else {
+            $response = Array(
+                "model" => $this->_model->toArray(true)
+            );
+            $this->getResponse()->appendBody(json_encode($response));
+        }
 
-        $response = Array(
-            "model" => $this->_model->toArray(true)
-        );
-
-        $this->getResponse()->appendBody(json_encode($response));
         $this->_SysMan->Logger->info('END '.$this->_className.'->putAction()','Common_Abstracts_RestController');
     }
 
