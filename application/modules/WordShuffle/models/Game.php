@@ -15,6 +15,8 @@
  * @property    int         roundAvg                -- average points scored in each round of a game
  * @property    string      status                  -- game status like Completed, Abandoned
  * @property    int         idNoteBook              -- NoteBook id of a Game
+ * @property    string      word                    -- user submitted word
+ * @property    array       scoreBoard              -- associative array, contains list of words and their scores
  */
 class WordShuffle_Model_Game extends Common_Abstracts_Model
 {
@@ -33,7 +35,7 @@ class WordShuffle_Model_Game extends Common_Abstracts_Model
     protected function init()
     {
 		parent::init();
-		
+
 		// todo: itemize any model properties which should be excluded from the model when sending response
 		$this->excludeFromJSON(array(
 		    
@@ -126,8 +128,23 @@ class WordShuffle_Model_Game extends Common_Abstracts_Model
     protected function getIdNoteBook(){
         return $this->_idNoteBook;
     }
-    
 
+    private $_word = null;
+    protected function setWord($value){
+        $this->_word = (string) $value;
+    }
+    protected function getWord(){
+        return $this->_word;
+    }
+
+    private $_scoreBoard = array();
+    protected function setScoreBoard($value){
+        $this->_scoreBoard = (array)$value;
+    }
+    protected function getScoreBoard(){
+        return $this->_scoreBoard;
+    }
+    
 
     /****************************************
      * MODEL PUBLIC METHODS declaration / definition
@@ -204,4 +221,100 @@ class WordShuffle_Model_Game extends Common_Abstracts_Model
         return $success;
     }
 
+    /**
+     *
+     * Get Session.ScoreBoard property value and store to Game.ScoreBoard property
+     * @private _getScoreBoardFromSession
+     * @param
+     * @return  array
+     */
+    private function _getScoreBoardFromSession()
+    {
+        $scoreBoard = $this->SysMan->Session->__get("scoreBoard");
+        return $scoreBoard;
+    }
+
+    /**
+     *
+     * Set Session.ScoreBoard property value with Game.ScoreBoard property
+     * @private _setScoreBoardFromSession
+     * @param
+     * @return  void
+     */
+    private function _setScoreBoardToSession($scoreBoard)
+    {
+        $this->SysMan->Session->__set("scoreBoard",$scoreBoard);
+    }
+
+    /**
+     * submit the word entered by user
+     *
+     * @public  submitWord
+     * @param
+     * @return  array
+     */
+    public function submitWord()
+    {
+        //$this->_setScoreBoardToSession(null);
+        $this->_scoreBoard = $this->_getScoreBoardFromSession();
+        $success = null;
+        $msg = null;
+        $count = strlen ($this->word);
+        if($count < 2)
+        {
+            return $response = Array(
+                "success" => false,
+                "msg" => "Word too short!"
+            );
+        }
+        
+        foreach ($this->_scoreBoard as $scoreBoard)
+        {
+                if ($this->_word == $scoreBoard['word']) {
+                    return $response = Array(
+                        "success" => false,
+                        "msg" => "Duplicate!"
+                    );
+                }
+        }
+        $successFindWord =  $this->Mapper->Game_Mapper_findWord($this->_word);
+        if($successFindWord)
+        {
+            switch ($count) {
+                case 2:
+                    $points = 2;
+                    break;
+                case 3:
+                    $points = 3;
+                    break;
+                case 4:
+                    $points = 5;
+                    break;
+                case 5:
+                    $points = 7;
+                    break;
+                case 6:
+                    $points = 9;
+                    break;
+                default:
+                    $points = $count + 3;
+            }
+            $score = Array(
+                "word" => $this->_word,
+                "points" => $points
+            );
+            //$this->setScoreBoard($score);
+            $this->_setScoreBoardToSession($score);
+            $this->_scoreBoard = $this->_getScoreBoardFromSession();
+            return $response = Array(
+                "success" => true,
+                "msg" => "Success!"
+            );
+        }
+        else
+            return $response = Array(
+                "success" => false,
+                "msg" => "Rejected!"
+            );
+    }
 }

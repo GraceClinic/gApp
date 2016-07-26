@@ -50,5 +50,31 @@ class WordShuffle_Model_Mapper_Game extends Common_Abstracts_Mapper
     {
         // todo:  determine what you will do after a save operation, document if you include
     }
- 
+
+    /**
+     * To validate if given word exists in database
+     * @public  Game_Mapper_findWord
+     * @param   $word
+     * @return  boolean
+     */
+    public function Game_Mapper_findWord($word)
+    {
+        $word = $word."\r";
+        $this->setDbTable("WordShuffle_Model_DbTable_WordList");
+        // set the database adapter also at this time to avoid dependencies
+        $this->_db = $this->getDbTable()->getAdapter();
+        $this->init();
+        $where = array(
+            "word = '$word'"
+        );
+        $res = $this->getDbTable()->fetchAll($where);
+        $count = count($res);
+        // There should only be one record or no record
+        if ($count == 1)
+            $success=true;
+        else
+            $success=false;
+        
+        return $success;
+    }
 }
