@@ -24,6 +24,7 @@ class WordShuffle_PlayerController extends Common_Abstracts_RestController
      */
     public function init()
     {
+        $this->_SysMan = Common_Models_SysMan::getInstance();
         try {
             $contents = file_get_contents("php://input");
             if ($contents) {
@@ -31,13 +32,15 @@ class WordShuffle_PlayerController extends Common_Abstracts_RestController
                 if (json_last_error()) {
                     throw new Exception("Invalid format passed as payload");
                 }
+                else {
+                    parent::init();
+                }
             }
         }
         catch (Exception $e) {
             $this->SERVER_ERROR = true;
             $this->ERROR_INFO = $e->getMessage();
         }
-        parent::init();
     }
 
 
@@ -120,13 +123,10 @@ class WordShuffle_PlayerController extends Common_Abstracts_RestController
                 break;
             case "logout":
                 $this->_SysMan->Logger->info("Start of logout()");
-                $this->_SysMan->Logger->info("Session before logout" . print_r($this->_SysMan->Session->toArray(), true));
-                //Zend_Session::namespaceUnset("gapp");
                 Zend_Session::destroy();
                 //Common_Models_Session::initSession();
                 $response = Array("message" => "logged out, session destroyed");
                 $results = true;
-                $this->_SysMan->Logger->info("Session after logout" . print_r($this->_SysMan->Session->toArray(), true));
                 $this->_SysMan->Logger->info("End of logout()");
                 break;
             default:
